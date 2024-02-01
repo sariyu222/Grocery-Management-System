@@ -1,0 +1,43 @@
+{% include "customer_head.html" %}
+
+<script>
+    $(document).ready(function(){
+        get_items()
+       $("#keyword").on("keyup",function(){
+            get_items();
+
+       });
+    })
+    function get_items(){
+        let keyword = $("#keyword").val()
+        let url = "http://127.0.0.1:5000/get_items?keyword="+keyword
+        $.get(url,function(data,status){
+            $("#items").html(data)
+         });
+    }
+</script>
+
+<div class="search mt-5">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="h6 text-white"><b>Choose Category :</b></div>
+                <select name="category_id" id="category_id" class="form-control mt-2">
+                    <option value="Choose Category">Choose Category</option>
+                    {% for category in categories: %}
+                    <option value="{{category['_id']}}">{{category['category_name']}}</option>
+                </select>
+            {%endfor%}
+        </div>
+        <div class="col-md-6 ">
+            <div class="searching">
+                <b class="text-white">Search Grocery's:</b>
+                <input type="search" id="keyword" name="keyword"  placeholder="Search Grocery" class="form-control mt-1">
+            </div>
+        </div>
+        <div class="col-md-3 mt-3">
+             <input type="submit" value="Filter" class="btn btn-primary w-100 form-control mt-2">
+        </div>
+        <div id="items"></div>
+    </div>
+</div>
+
